@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ <style>
+ *{
+ margin:0px;
+ padding:0px;
+ }
+ .road{
+ width:50%;
+ height:100vh;
+ background-color:#808080;
+ position:relative;
+ left:25%;
+ border-left: 3px solid black;
+ border-right: 3px solid black;
+ display:-webkit-box;
+ overflow:hidden;
+ }
+ .line{
+ -webkit-box-flex:1;
+ margin-top:-100%;
+ height:200%;
+ border-right: 3px dashed white;
+ position:relative;
+ }
+ .last{
+border-right:none;
+ }
+ .car1{
+ width: 20%;
+ height:20%;
+ border-radius:10px;
+ background:url(img/img1.png);
+ background-size:100% 100%;
+ position:absolute;
+ margin:0 auto;
+ top:0px;
+ left:0px;
+ }
+.car2{
+ height:20%;
+ width:20%;
+ background:url(img/img2.jpg);
+ background-size:100% 100%;
+ position:absolute;
+ margin:0 auto;
+ left:40%;
+ top:80%;
+ 
+ }
+
+
+
+ </style>
+ </head>
+ <body>
+  <div class="road">
+   <div class="car2" id="car2">
+   </div>
+   <div class="line"id="line">
+   </div>
+   <div class="line">
+   </div>
+   <div class="line">
+   </div>
+   <div class="line">
+   </div>
+   <div class="line last">
+   </div>
+  </div>
+ <script src="js/jquery-1.12.3.min.js"></script>
+ <script> 
+   var car=document.getElementById("car2");
+   var hi=car.offsetTop;
+   var wid=document.getElementById("line").offsetWidth;
+   var hei=document.getElementById("line").offsetHeight;
+   var event=window.event; 
+  // console.log(wid);
+  // console.log(hei);
+  
+   //跑道
+   move();
+  function move(){
+    $(".line").animate({"margin-top":"0"},1000,"linear",function(){
+ 		back();
+ 	});	
+  }
+  function back(){
+    $(".line").css({"margin-top":"-100%"});
+    move(); 
+  } 
+   //敌方
+   //var  point=0;
+   var t=2000;
+   var cars=[];
+   var interval= setInterval(creat,1000) 
+   function creat(){   
+	  var newcar=document.createElement("div");	 
+	  newcar.className ="car1";
+	  newcar.style.left=parseInt(Math.random()*5)*wid+"px";  
+	  $(".road").append(newcar);
+	  cars.push(newcar);
+	   console.log(cars);
+	  if(t>=100){
+	  t=t-20;
+	  }else{
+	  t=100;
+	  }
+	 // var car=document.getElementsByClassName("car1");
+	 //  var top=car[0].offsetTop; 
+ 	 // console.log(top);
+     // console.log(car[0].offsetHeight);
+	  $(".car1").animate({"top":"100%"},t,"linear",function(){ 
+	  $(this).remove();
+
+	  //point=point+5;		  
+	  });   
+   }
+    //自己的车
+   window.document.onkeydown=function(event){
+ 	 //  console.log(event.keyCode);
+	switch(event.keyCode){
+ 		case 37:
+ 		if(car.offsetLeft>0){
+ 		car.style.left=car.offsetLeft - wid+ "px";		
+ 	    }else{ 	 	
+ 		}
+ 		break; 		
+ 		case 39:
+ 		if(car.offsetLeft=0 || car.offsetLeft <3*wid ){
+ 		car.style.left=car.offsetLeft + wid+ "px";	
+ 	    }	
+ 	    break;
+ 	}        
+   }
+  
+   //游戏结束
+   
+ 
+
+
+
+
+
+ </script>
+ 
+ </body>
+</html>
