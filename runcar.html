@@ -48,8 +48,13 @@
 		    top:0;
 			left:40%;	
 		    }
-		 
-		
+		.zd{		
+		width: 10%;
+	    height: 10%;
+		position:absolute;	
+		background:black;
+		left:20%;	
+     	}
 	</style>
 	
 	</head>
@@ -60,27 +65,30 @@
 		<div class="track"></div>
 		<div class="track"></div>
 		<div class="track"></div>
-		<div class="track last"></div>	
+		<div class="track last"></div>	  
 	</div>
+
 	<script src="js/jquery-1.12.3.min.js"></script>
 	  <script type="text/javascript">
-	  	 move();
-	  	function move(){
+	    window.onload = function() {  
+		    move();
+		  	self();
+		  	creat();
+		  	
+	  	
+	  function move(){
 	  		$(".track").animate({"margin-top":"0"},1000,"linear",function(){
-	  			back();
-	  		})	
-	  	}
-	  	function back(){
 	  		$(".track").css({"margin-top":"-100%"})	
 	  	    move();
-	  	}
-	  	
-	  	
-	 var car=document.getElementById("car1");
-	 var wid=document.getElementById("track").offsetWidth;
+	  		})	
+	  }  	
+	 function self(){ 
+	  var car=document.getElementById("car1");
+	  var wid=document.getElementById("track").offsetWidth;	 
 	  window.document.onkeydown=function(event){
 	  	var event=window.event;
-	  	console.log(event.keyCode);
+	  	var car1_left = $(".car1").position().left;
+	  	var car1_top = $(".car1").position().top
 	  	switch(event.keyCode){
 	  		case 37:
 	  		if(car.offsetLeft>0){
@@ -92,20 +100,53 @@
             car.style.left=car.offsetLeft + wid+ "px";
 	  		}	
 	  		break;
+	  	    
 	  	    case 88:
-	  	    $(".car1").animate({"opacity":"0"},500,function(){
-	  	    	car.style.opacity=1;
-	  	    });
-	  	    break;
+	  	    function zidan(){  	  	   
+	  	    var car1_left = ($(".car1").position().left+40)+"px";
+		    var car1_top = $(".car1").position().top+"px";
+	  	    var zd=document.createElement("div");
+            zd.className="zd";
+  	        zd.style.left= car1_left;
+  	        
+	  	    zd.style.top = car1_top ;
+	  	    $(".road").append(zd);
+  	        $(".zd").animate({"top":"-10%"},100,function(){ 	        	
+  	         $(".zd").remove;	
+  	        })
+  	        }
+          	zidan();   
+  	        break;
 	  	}
+	   }
 	  }
-	var t=1000; 	
-	var interval=setInterval(creat,1000)
+	
+	function creat(){
+    var t=1000;
+    var point=0;
+    var wid=document.getElementById("track").offsetWidth;
+	var interval=setInterval(creat,500)
 	function creat(){
 		var newcar=document.createElement("div");
 		newcar.className="car2";
 		newcar.style.left=parseInt(Math.random()*5)*wid+"px"; 
-		$(".road").append(newcar);
+		$(".road").append(newcar);	
+		var flat=setInterval(function(){
+			    var car1_left = $(".car1").position().left;
+				var car1_top = $(".car1").position().top+50;
+				for(var i=0;i<$(".car2").length;i++){
+					var car2_left = $(".car2").eq(i).position().left;
+					var car2_top = $(".car2").eq(i).position().top;
+                    var leftcha= car1_left - car2_left;
+                    var topcha = car1_top -car2_top -$(".car2").height();
+					if(Math.abs(leftcha)<2 && Math.abs(topcha)<20){
+						alert("点击确定重新开始；得分为："+point);		
+						clearInterval(flat);
+						window.location.reload();
+						break;
+					}
+		        }
+		},30)
 		if(t>=100){
 		  t=t-20;
 		  }else{
@@ -113,9 +154,13 @@
 		}
 		$(".car2").animate({"top":"100%"},t,function(){	
 			$(this).remove();
-		})	
+			point=point+5;	
+			console.log(point);
+		  
+		})
+	  } 
+	  }
 	}
-	
 	  </script>
 	
 	
